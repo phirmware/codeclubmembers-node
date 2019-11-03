@@ -22,4 +22,14 @@ const getUsersProjects = async (req, res) => {
     }
 }
 
-export default { ...CrudControllers(Project), createProject, getUsersProjects }
+const viewProjects = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const projects = await Project.find({ user_id: id });
+        res.json(projects);
+    } catch (e) {
+        res.status(400).json({ message: 'Something went wrong' });
+    }
+}
+
+export default { ...CrudControllers(Project), createProject, getUsersProjects, viewProjects }

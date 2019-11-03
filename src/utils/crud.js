@@ -1,8 +1,8 @@
 const getMany = model => async (req, res) => {
     try {
-        const data = await model.find();
+        const data = await model.find({}, { password: 0 });
         res.json({ data });
-    } catch (e) { 
+    } catch (e) {
         res.status(400).send({ message: e });
     }
 }

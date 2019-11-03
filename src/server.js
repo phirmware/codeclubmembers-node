@@ -6,6 +6,8 @@ import userRouter from './resources/user/user.router';
 import projectRouter from './resources/project/project.router';
 import { connect } from './utils/db';
 import { login, signUp } from './utils/auth';
+import userController from './resources/user/user.controller';
+import projectController from './resources/project/project.controller';
 import { protect } from './utils/auth';
 
 const app = express();
@@ -17,8 +19,12 @@ app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
-app.use('/login', login);
-app.use('/signup', signUp);
+app.post('/login', login);
+app.post('/signup', signUp);
+app.get('/members', userController.getMany);
+app.post('/star/:id', userController.addAStar);
+app.get('/members/:username', userController.viewFullProfile);
+app.get('/projects/:id', projectController.viewProjects);
 
 app.use('/api', protect);
 app.use('/api/user', userRouter);
