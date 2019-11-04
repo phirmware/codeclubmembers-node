@@ -88,7 +88,7 @@ userSchema.pre('save', function (next) {
     return next();
   }
 
-  _bcrypt.default.hash(this.password, 8, (err, hash) => {
+  _bcrypt.default.hash(this.password, 10, (err, hash) => {
     if (err) {
       next(err);
     } else {
