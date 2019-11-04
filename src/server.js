@@ -11,6 +11,7 @@ import projectController from './resources/project/project.controller';
 import { protect } from './utils/auth';
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 app.disable('x-powered-by');
 
@@ -45,7 +46,7 @@ export const start = async () => {
     } catch (e) { 
         console.log(`Could not connect to server 😠 😠 😠 😠 😠 😠 😠 `);
     }
-    app.listen(3000, () => {
+    app.listen(port, () => {
         console.log(`Connected 😎 😎 😎 😎 at port 3000`);
     });
 };

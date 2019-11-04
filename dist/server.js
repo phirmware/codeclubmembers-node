@@ -28,6 +28,7 @@ var _project2 = _interopRequireDefault(require("./resources/project/project.cont
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const app = (0, _express.default)();
+const port = process.env.PORT || 3000;
 app.disable('x-powered-by');
 app.use((0, _cors.default)());
 app.use((0, _bodyParser.json)());
@@ -63,7 +64,7 @@ const start = async () => {
     console.log(`Could not connect to server 😠 😠 😠 😠 😠 😠 😠 `);
   }
 
-  app.listen(3000, () => {
+  app.listen(port, () => {
     console.log(`Connected 😎 😎 😎 😎 at port 3000`);
   });
 };
