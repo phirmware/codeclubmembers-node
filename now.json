@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "name": "Ojukwu-Chibuzor",
+    "builds": [
+        {
+            "src": "/index.js",
+            "use": "@now/node-server"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/index.js"
+        }
+    ]
+}
