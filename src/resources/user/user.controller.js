@@ -15,6 +15,16 @@ const viewFullProfile = async (req, res) => {
     }
 }
 
+const editProfile = async (req, res) => {
+    const { id } = req.user;
+    try {
+        const update = await User.findByIdAndUpdate(id, req.body, { new: true });
+        res.json(update);
+    } catch (e) {
+        res.status(400).json({ message: 'Something went wrong',e });
+    }
+}
+
 const addAStar = async (req, res) => {
     const { id } = req.params;
     try {
@@ -47,4 +57,4 @@ const addAStar = async (req, res) => {
     }
 }
 
-export default { ...CrudControllers(User), getFullProfile, addAStar, viewFullProfile }
+export default { ...CrudControllers(User), getFullProfile, addAStar, viewFullProfile, editProfile }

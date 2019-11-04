@@ -5,6 +5,6 @@ const router = Router();
 
 router.route('/').get(controller.getMany).post(controller.createOne);
 
-router.route('/profile').get(controller.getFullProfile);
+router.route('/profile').get(controller.getFullProfile).post(controller.editProfile);
 
 export default router;

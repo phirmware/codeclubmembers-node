@@ -48,6 +48,9 @@ export const login = async (req, res) => {
 
 export const protect = async (req, res, next) => {
     const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return next('No token provided');
+    }
     const arr = authHeader.split(' ');
     const token = arr[0] === 'Bearer' ? arr[1] : false;
     try {
