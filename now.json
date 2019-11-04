@@ -3,14 +3,14 @@
 	"name": "Ojukwu-Chibuzor",
 	"builds": [
         {
-            "src": "/dist/index.js",
+            "src": "/src/index.js",
             "use": "@now/node-server"
         }
 	],
 	"routes": [
 		{
-			"src": "/dist/(.*)",
-			"dest": "/dist/index.js"
+			"src": "/src/(.*)",
+			"dest": "/src/index.js"
 		}
 	]
 }
