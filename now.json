@@ -1,16 +1,16 @@
 {
-    "version": 2,
-    "name": "Ojukwu-Chibuzor",
-    "builds": [
+	"version": 2,
+	"name": "Ojukwu-Chibuzor",
+	"builds": [
         {
             "src": "/dist/index.js",
             "use": "@now/node-server"
         }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/dist/index.js"
-        }
-    ]
+	],
+	"routes": [
+		{
+			"src": "/dist/(.*)",
+			"dest": "/dist/index.js"
+		}
+	]
 }
