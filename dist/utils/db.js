@@ -17,7 +17,7 @@ _mongoose.default.set('useCreateIndex', true); //mongodb://<dbuser>:<dbpassword>
 //mongodb://localhost/codeclubmembers
 
 
-const connect = () => _mongoose.default.connect('mongodb://localhost/codeclubmembers', {
+const connect = () => _mongoose.default.connect('mongodb://phirmware:itachi1@ds241268.mlab.com:41268/codeclub', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
