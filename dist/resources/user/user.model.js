@@ -9,6 +9,8 @@ var _mongoose = require("mongoose");
 
 var _bcrypt = _interopRequireDefault(require("bcrypt"));
 
+var _passportLocalMongoose = _interopRequireDefault(require("passport-local-mongoose"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const userSchema = new _mongoose.Schema({
@@ -21,12 +23,7 @@ const userSchema = new _mongoose.Schema({
     maxlength: 15,
     required: true
   },
-  password: {
-    type: String,
-    lowercase: true,
-    required: true,
-    minlength: 4
-  },
+  password: String,
   role: {
     type: String,
     required: true,
@@ -82,34 +79,31 @@ const userSchema = new _mongoose.Schema({
     required: true,
     default: 0
   }
-});
-userSchema.pre('save', function (next) {
-  if (!this.isModified('password')) {
-    return next();
-  }
+}); // userSchema.pre('save', function (next) {
+//     if (!this.isModified('password')) {
+//         return next();
+//     }
+//     bcrypt.hash(this.password, 10, (err, hash) => {
+//         if (err) {
+//             next(err);
+//         } else {
+//             this.password = hash;
+//             next();
+//         }
+//     });
+// });
+// userSchema.methods.checkPassword = function (password) {
+//     const hashPassword = this.password;
+//     return new Promise((resolve, reject) => {
+//         bcrypt.compare(password, hashPassword, (err, same) => {
+//             if (err) {
+//                 return reject(err);
+//             }
+//             resolve(same);
+//         });
+//     });
+// };
 
-  _bcrypt.default.hash(this.password, 10, (err, hash) => {
-    if (err) {
-      next(err);
-    } else {
-      this.password = hash;
-      next();
-    }
-  });
-});
-
-userSchema.methods.checkPassword = function (password) {
-  const hashPassword = this.password;
-  return new Promise((resolve, reject) => {
-    _bcrypt.default.compare(password, hashPassword, (err, same) => {
-      if (err) {
-        return reject(err);
-      }
-
-      resolve(same);
-    });
-  });
-};
-
+userSchema.plugin(_passportLocalMongoose.default);
 const User = (0, _mongoose.model)('user', userSchema);
 exports.User = User;

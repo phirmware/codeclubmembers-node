@@ -25,17 +25,32 @@ var _user2 = _interopRequireDefault(require("./resources/user/user.controller"))
 
 var _project2 = _interopRequireDefault(require("./resources/project/project.controller"));
 
+var _passport = _interopRequireDefault(require("passport"));
+
+var _passportLocal = require("passport-local");
+
+var _user3 = require("./resources/user/user.model");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const app = (0, _express.default)();
 const port = process.env.PORT || 3000;
 app.disable('x-powered-by');
+app.use(_passport.default.initialize());
+app.use(_passport.default.session());
 app.use((0, _cors.default)());
 app.use((0, _bodyParser.json)());
 app.use((0, _bodyParser.urlencoded)({
   extended: true
 }));
 app.use((0, _morgan.default)('dev'));
+
+_passport.default.use(new _passportLocal.Strategy(_user3.User.authenticate()));
+
+_passport.default.serializeUser(_user3.User.serializeUser());
+
+_passport.default.deserializeUser(_user3.User.deserializeUser());
+
 app.post('/login', _auth.login);
 app.post('/signup', _auth.signUp);
 app.get('/members', _user2.default.getMany);

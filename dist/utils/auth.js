@@ -9,6 +9,8 @@ var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
 var _user = require("../resources/user/user.model");
 
+var _passport = _interopRequireDefault(require("passport"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const createToken = user => {
@@ -33,59 +35,103 @@ const resolveToken = token => {
 
 exports.resolveToken = resolveToken;
 
-const signUp = async (req, res) => {
+const signUp = (req, res) => {
+  const {
+    username,
+    password,
+    role,
+    status,
+    display_image
+  } = req.body;
+
   try {
-    const data = await _user.User.create(req.body);
-    const token = createToken({
-      username: data.username,
-      id: data._id
-    });
-    res.json({
-      token
-    });
-  } catch (e) {
-    res.status(400).send(e);
-  }
-};
-
-exports.signUp = signUp;
-
-const login = async (req, res) => {
-  try {
-    const {
-      password,
-      username
-    } = req.body;
-    const user = await _user.User.findOne({
-      username
-    }).select('username password').exec();
-
-    if (!user) {
-      res.status(404).send({
-        message: 'User not found'
-      });
-    } else {
-      const same = await user.checkPassword(password);
-
-      if (!same) {
-        res.status(400).send({
-          message: 'Invalid password'
+    _user.User.register(new _user.User({
+      username,
+      role,
+      status,
+      display_image
+    }), password, err => {
+      if (err) {
+        return res.status(400).json({
+          err,
+          message: 'This one'
         });
-      } else {
+      }
+
+      _user.User.findOne({
+        username
+      }).then(user => {
+        console.log(user);
         const token = createToken({
           username,
-          id: user.id
+          id: user._id
         });
         res.json({
           token
         });
-      }
-    }
-  } catch (e) {
-    return res.status(404).json({
-      message: 'Error'
+      }).catch(e => {
+        console.log(e);
+      });
     });
+  } catch (e) {
+    res.status(400).send(e);
   }
+}; // export const login = async (req, res) => {
+//     try {
+//         const { password, username } = req.body;
+//         const user = await User.findOne({ username }).select('username password').exec();
+//         if (!user) {
+//             res.status(404).send({ message: 'User not found' });
+//         } else {
+//             const same = await user.checkPassword(password);
+//             if (!same) {
+//                 res.status(400).send({ message: 'Invalid password' });
+//             } else {
+//                 const token = createToken({ username, id: user.id });
+//                 res.json({ token });
+//             }
+//         }
+//     } catch (e) {
+//         return res.status(404).json({ message: 'Error' });
+//     }
+// }
+
+
+exports.signUp = signUp;
+
+const login = (req, res, next) => {
+  const {
+    username
+  } = req.body;
+
+  _passport.default.authenticate('local', {
+    session: false
+  }, (err, user) => {
+    console.log(user, 'Eyo');
+
+    if (err || !user) {
+      return res.status(400).json({
+        message: 'Something is not right'
+      });
+    }
+
+    req.login(user, {
+      session: false
+    }, err => {
+      if (err) {
+        return res.send(err);
+      }
+
+      console.log(user);
+      const token = createToken({
+        username,
+        id: user._id
+      });
+      res.json({
+        token
+      });
+    });
+  })(req, res, next);
 };
 
 exports.login = login;

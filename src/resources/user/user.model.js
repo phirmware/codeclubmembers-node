@@ -1,5 +1,6 @@
 import { model, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
+import passportLocalMongoose from 'passport-local-mongoose';
 
 const userSchema = new Schema({
     username: {
@@ -11,12 +12,7 @@ const userSchema = new Schema({
         maxlength: 15,
         required: true,
     },
-    password: {
-        type: String,
-        lowercase: true,
-        required: true,
-        minlength: 4
-    },
+    password: String,
     role: {
         type: String,
         required: true,
@@ -74,30 +70,32 @@ const userSchema = new Schema({
     }
 });
 
-userSchema.pre('save', function (next) {
-    if (!this.isModified('password')) {
-        return next();
-    }
-    bcrypt.hash(this.password, 10, (err, hash) => {
-        if (err) {
-            next(err);
-        } else {
-            this.password = hash;
-            next();
-        }
-    });
-});
+// userSchema.pre('save', function (next) {
+//     if (!this.isModified('password')) {
+//         return next();
+//     }
+//     bcrypt.hash(this.password, 10, (err, hash) => {
+//         if (err) {
+//             next(err);
+//         } else {
+//             this.password = hash;
+//             next();
+//         }
+//     });
+// });
 
-userSchema.methods.checkPassword = function (password) {
-    const hashPassword = this.password;
-    return new Promise((resolve, reject) => {
-        bcrypt.compare(password, hashPassword, (err, same) => {
-            if (err) {
-                return reject(err);
-            }
-            resolve(same);
-        });
-    });
-};
+// userSchema.methods.checkPassword = function (password) {
+//     const hashPassword = this.password;
+//     return new Promise((resolve, reject) => {
+//         bcrypt.compare(password, hashPassword, (err, same) => {
+//             if (err) {
+//                 return reject(err);
+//             }
+//             resolve(same);
+//         });
+//     });
+// };
+
+userSchema.plugin(passportLocalMongoose);
 
 export const User = model('user', userSchema);
