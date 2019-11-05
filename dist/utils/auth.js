@@ -76,26 +76,7 @@ const signUp = (req, res) => {
   } catch (e) {
     res.status(400).send(e);
   }
-}; // export const login = async (req, res) => {
-//     try {
-//         const { password, username } = req.body;
-//         const user = await User.findOne({ username }).select('username password').exec();
-//         if (!user) {
-//             res.status(404).send({ message: 'User not found' });
-//         } else {
-//             const same = await user.checkPassword(password);
-//             if (!same) {
-//                 res.status(400).send({ message: 'Invalid password' });
-//             } else {
-//                 const token = createToken({ username, id: user.id });
-//                 res.json({ token });
-//             }
-//         }
-//     } catch (e) {
-//         return res.status(404).json({ message: 'Error' });
-//     }
-// }
-
+};
 
 exports.signUp = signUp;
 
