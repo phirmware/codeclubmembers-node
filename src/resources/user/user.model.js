@@ -67,34 +67,14 @@ const userSchema = new Schema({
         type: Number,
         required: true,
         default: 0,
-    }
+    },
+    liked_posts: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'post',
+        }
+    ]
 });
-
-// userSchema.pre('save', function (next) {
-//     if (!this.isModified('password')) {
-//         return next();
-//     }
-//     bcrypt.hash(this.password, 10, (err, hash) => {
-//         if (err) {
-//             next(err);
-//         } else {
-//             this.password = hash;
-//             next();
-//         }
-//     });
-// });
-
-// userSchema.methods.checkPassword = function (password) {
-//     const hashPassword = this.password;
-//     return new Promise((resolve, reject) => {
-//         bcrypt.compare(password, hashPassword, (err, same) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             resolve(same);
-//         });
-//     });
-// };
 
 userSchema.plugin(passportLocalMongoose);
 

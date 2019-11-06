@@ -47,17 +47,15 @@ export const signUp = (req, res) => {
 export const login = (req, res, next) => {
     const { username } = req.body;
     passport.authenticate('local', { session: false }, (err, user) => {
-        console.log(user, 'Eyo');
         if (err || !user) {
-            return res.status(400).json({
-                message: 'Something is not right',
+            return res.status(401).json({
+                message: 'User not found',
             });
         }
         req.login(user, { session: false }, err => {
             if (err) {
                 return res.send(err);
             }
-            console.log(user);
             const token = createToken({ username, id: user._id });
             res.json({ token });
         });

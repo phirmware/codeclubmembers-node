@@ -7,6 +7,8 @@ exports.connect = void 0;
 
 var _mongoose = _interopRequireDefault(require("mongoose"));
 
+var _config = _interopRequireDefault(require("../config/config"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _mongoose.default.set('useNewUrlParser', true);
@@ -17,7 +19,7 @@ _mongoose.default.set('useCreateIndex', true); //mongodb://<dbuser>:<dbpassword>
 //mongodb://localhost/codeclubmembers
 
 
-const connect = () => _mongoose.default.connect('mongodb://phirmware:itachi1@ds241268.mlab.com:41268/codeclub', {
+const connect = () => _mongoose.default.connect(_config.default.db, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });

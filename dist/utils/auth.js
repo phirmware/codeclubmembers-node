@@ -88,11 +88,9 @@ const login = (req, res, next) => {
   _passport.default.authenticate('local', {
     session: false
   }, (err, user) => {
-    console.log(user, 'Eyo');
-
     if (err || !user) {
-      return res.status(400).json({
-        message: 'Something is not right'
+      return res.status(401).json({
+        message: 'User not found'
       });
     }
 
@@ -103,7 +101,6 @@ const login = (req, res, next) => {
         return res.send(err);
       }
 
-      console.log(user);
       const token = createToken({
         username,
         id: user._id

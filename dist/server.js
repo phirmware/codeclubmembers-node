@@ -17,6 +17,8 @@ var _user = _interopRequireDefault(require("./resources/user/user.router"));
 
 var _project = _interopRequireDefault(require("./resources/project/project.router"));
 
+var _post = _interopRequireDefault(require("./resources/post/post.router"));
+
 var _db = require("./utils/db");
 
 var _auth = require("./utils/auth");
@@ -24,6 +26,8 @@ var _auth = require("./utils/auth");
 var _user2 = _interopRequireDefault(require("./resources/user/user.controller"));
 
 var _project2 = _interopRequireDefault(require("./resources/project/project.controller"));
+
+var _post2 = _interopRequireDefault(require("./resources/post/post.controller"));
 
 var _passport = _interopRequireDefault(require("passport"));
 
@@ -57,9 +61,12 @@ app.get('/members', _user2.default.getMany);
 app.post('/star/:id', _user2.default.addAStar);
 app.get('/members/:username', _user2.default.viewFullProfile);
 app.get('/projects/:id', _project2.default.viewProjects);
+app.get('/posts', _post2.default.findAllPosts);
+app.get('/post/:id', _post2.default.fetchPost);
 app.use('/api', _auth.protect);
 app.use('/api/user', _user.default);
 app.use('/api/project', _project.default);
+app.use('/api/post', _post.default);
 app.get('/', (req, res) => {
   res.json({
     message: 'Im here'

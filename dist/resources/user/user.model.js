@@ -78,32 +78,12 @@ const userSchema = new _mongoose.Schema({
     type: Number,
     required: true,
     default: 0
-  }
-}); // userSchema.pre('save', function (next) {
-//     if (!this.isModified('password')) {
-//         return next();
-//     }
-//     bcrypt.hash(this.password, 10, (err, hash) => {
-//         if (err) {
-//             next(err);
-//         } else {
-//             this.password = hash;
-//             next();
-//         }
-//     });
-// });
-// userSchema.methods.checkPassword = function (password) {
-//     const hashPassword = this.password;
-//     return new Promise((resolve, reject) => {
-//         bcrypt.compare(password, hashPassword, (err, same) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             resolve(same);
-//         });
-//     });
-// };
-
+  },
+  liked_posts: [{
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'post'
+  }]
+});
 userSchema.plugin(_passportLocalMongoose.default);
 const User = (0, _mongoose.model)('user', userSchema);
 exports.User = User;

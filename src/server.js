@@ -4,10 +4,12 @@ import morgan from 'morgan';
 import cors from 'cors';
 import userRouter from './resources/user/user.router';
 import projectRouter from './resources/project/project.router';
+import postRouter from './resources/post/post.router';
 import { connect } from './utils/db';
 import { login, signUp } from './utils/auth';
 import userController from './resources/user/user.controller';
 import projectController from './resources/project/project.controller';
+import postController from './resources/post/post.controller';
 import { protect } from './utils/auth';
 import passport from 'passport';
 import { Strategy } from 'passport-local';
@@ -35,10 +37,13 @@ app.get('/members', userController.getMany);
 app.post('/star/:id', userController.addAStar);
 app.get('/members/:username', userController.viewFullProfile);
 app.get('/projects/:id', projectController.viewProjects);
+app.get('/posts', postController.findAllPosts);
+app.get('/post/:id', postController.fetchPost);
 
 app.use('/api', protect);
 app.use('/api/user', userRouter);
 app.use('/api/project', projectRouter);
+app.use('/api/post', postRouter);
 
 app.get('/', (req, res) => {
     res.json({ message: 'Im here' });
